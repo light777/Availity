@@ -26,7 +26,11 @@ export default class Registration extends React.Component {
 
   async saveRegistration(evt) {
     evt.preventDefault();
-    await axios.post('https://somebackendurl.com/registration', this.state);
+    try {
+      await axios.post('https://somebackendurl.com/registration', this.state);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   render() {
