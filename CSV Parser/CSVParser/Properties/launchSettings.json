@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CSVParser": {
+      "commandName": "Project",
+      "commandLineArgs": "Customers.csv"
+    }
+  }
+}
