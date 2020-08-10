@@ -61,6 +61,7 @@ namespace Code_Validator_Tests
 				;; will decrease by a factor of unity
 				(defvar *mult-hyst* 3)
 			");
+			Assert.IsTrue(result);
 		}
 
 		[TestMethod]
@@ -71,6 +72,7 @@ namespace Code_Validator_Tests
 				;; will decrease by a factor of unity
 				(defvar *mult-hyst* 3)
 			");
+			Assert.IsTrue(result);
 		}
 	}
 }
