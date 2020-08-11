@@ -1,87 +1,75 @@
 import React from 'react';
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
+import './Registration.css';
 
-export default class Registration extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      firstName: '',
-      lastName: '',
-      npiNumber: '',
-      address1: '',
-      address2: '',
-      city: '',
-      state: '',
-      zip: '',
-      telephone: '',
-      email: '',
-    };
-  }
-
-  handleChange(evt) {
-    this.setState({
-      [evt.target.name]: evt.target.value
-    });
-  }
-
-  async saveRegistration(evt) {
-    evt.preventDefault();
+export default () => {
+  const { handleSubmit, register, errors } = useForm();
+  const onSubmit = async (data) => {
     try {
-      await axios.post('https://somebackendurl.com/registration', this.state);
+      console.log(data);
+      await axios.post('https://somebackendurl.com/registration', data);
     } catch (err) {
       console.log(err);
     }
   }
 
-  render() {
-    return (
-      <div>
-        <form onSubmit={(evt) => this.saveRegistration(evt)}>
-          <div>
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" value={this.state.firstName} onChange={(evt) => this.handleChange(evt)} />
-          </div>
-          <div>
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" value={this.state.lastName} onChange={(evt) => this.handleChange(evt)} />
-          </div>
-          <div>
-            <label for="npiNumber">NPI Number:</label>
-            <input type="text" id="npiNumber" name="npiNumber" value={this.state.npiNumber} onChange={(evt) => this.handleChange(evt)} />
-          </div>
-          <div>
-            <label for="address1">Address 1:</label>
-            <input type="text" id="address1" name="address1" value={this.state.address1} onChange={(evt) => this.handleChange(evt)} />
-          </div>
-          <div>
-            <label for="address2">Address 2:</label>
-            <input type="text" id="address2" name="address2" value={this.state.address2} onChange={(evt) => this.handleChange(evt)} />
-          </div>
-          <div>
-            <label for="city">City:</label>
-            <input type="text" id="city" name="city" value={this.state.city} onChange={(evt) => this.handleChange(evt)} />
-          </div>
-          <div>
-            <label for="state">State:</label>
-            <input type="text" id="state" name="state" value={this.state.state} onChange={(evt) => this.handleChange(evt)} />
-          </div>
-          <div>
-            <label for="zip">Zip:</label>
-            <input type="text" id="zip" name="zip" value={this.state.zip} onChange={(evt) => this.handleChange(evt)} />
-          </div>
-          <div>
-            <label for="telephone">Telephone:</label>
-            <input type="text" id="telephone" name="telephone" value={this.state.telephone} onChange={(evt) => this.handleChange(evt)} />
-          </div>
-          <div>
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" value={this.state.email} onChange={(evt) => this.handleChange(evt)} />
-          </div>
-          <div>
-            <button type="submit">Register</button>
-          </div>
-        </form>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label htmlFor="firstName">First Name:</label>
+          <input type="text" id="firstName" name="firstName" ref={register({ required: true })} />
+          <span>{ errors.firstName && "First Name is required" }</span>
+        </div>
+        <div>
+          <label htmlFor="lastName">Last Name:</label>
+          <input type="text" id="lastName" name="lastName" ref={register({ required: true })} />
+          <span>{ errors.lastName && "Last Name is required" }</span>
+        </div>
+        <div>
+          <label htmlFor="npiNumber">NPI Number:</label>
+          <input type="text" id="npiNumber" name="npiNumber" ref={register({ required: true })} />
+          <span>{ errors.npiNumber && "NPI Number is required" }</span>
+        </div>
+        <div>
+          <label htmlFor="address1">Address 1:</label>
+          <input type="text" id="address1" name="address1" ref={register({ required: true })} />
+          <span>{ errors.address1 && "Address is required" }</span>
+        </div>
+        <div>
+          <label htmlFor="address2">Address 2:</label>
+          <input type="text" id="address2" name="address2" ref={register()} />
+        </div>
+        <div>
+          <label htmlFor="city">City:</label>
+          <input type="text" id="city" name="city" ref={register({ required: true })} />
+          <span>{ errors.city && "City is required" }</span>
+        </div>
+        <div>
+          <label htmlFor="state">State:</label>
+          <input type="text" id="state" name="state" ref={register({ required: true })} />
+          <span>{ errors.state && "State is required" }</span>
+        </div>
+        <div>
+          <label htmlFor="zip">Zip:</label>
+          <input type="text" id="zip" name="zip" ref={register({ required: true })} />
+          <span>{ errors.zip && "Zip is required" }</span>
+        </div>
+        <div>
+          <label htmlFor="telephone">Telephone:</label>
+          <input type="text" id="telephone" name="telephone" ref={register({ required: true, maxLength: 11, minLength: 8 })} />
+          <span>{ errors.telephone && "A proper telephone number is required" }</span>
+        </div>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input type="text" id="email" name="email" ref={register({ required: true, pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ })} />
+          <span>{ errors.email && "A proper email is required" }</span>
+        </div>
+        <div>
+          <input type="submit" value="Register"></input>
+        </div>
+      </form>
+    </div>
+  )
 }
